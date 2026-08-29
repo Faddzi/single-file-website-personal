@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e8e4da">
+  <meta name="description" content="The Employee File — an unofficial personnel dossier for Muffaddal.">
+  <title>THE EMPLOYEE FILE // SW-001</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+      --paper: #ebe8df;
+      --paper-deep: #dedbd1;
+      --ink: #161616;
+      --muted: #686861;
+      --line: rgba(22, 22, 22, .2);
+      --red: #b42e28;
+      --red-dark: #7e201d;
+      --wash: rgba(255,255,255,.3);
+      --mono: 'DM Mono', 'Courier New', monospace;
+      --sans: 'Space Grotesk', Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--sans);
+      line-height: 1.45;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(rgba(20,20,20,.07) .55px, transparent .7px),
+        linear-gradient(90deg, rgba(255,255,255,.13), transparent 30%, rgba(0,0,0,.035));
+      background-size: 6px 6px, 100% 100%;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+      opacity: .13;
+      background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,.2) 4px, transparent 5px);
+      mix-blend-mode: multiply;
+    }
+
+    a { color: inherit; }
+    a:focus-visible, summary:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+    .shell { width: min(1440px, calc(100% - 48px)); margin: auto; }
+    .mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; font-size: .69rem; }
+    .red { color: var(--red); }
+    .micro { color: var(--muted); font: 10px var(--mono); letter-spacing: .09em; text-transform: uppercase; }
+
+    .topline { border-bottom: 1px solid var(--ink); padding: 17px 0 12px; display: flex; justify-content: space-between; gap: 20px; }
+    .topline span:last-child { text-align: right; }
+    .eyebrow { font: 500 11px var(--mono); letter-spacing: .12em; }
+
+    header { min-height: 720px; position: relative; padding: 74px 0 86px; border-bottom: 1px solid var(--ink); overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1fr minmax(280px, 410px); gap: 9vw; align-items: end; min-height: 555px; }
+    h1 { font-size: clamp(4.8rem, 14vw, 12.5rem); line-height: .78; letter-spacing: -.09em; margin: 0 0 42px; max-width: 900px; font-weight: 700; }
+    .hero-kicker { max-width: 540px; font: 500 clamp(1rem, 1.7vw, 1.35rem)/1.25 var(--mono); text-transform: uppercase; }
+    .hero-kicker strong { color: var(--red); font-weight: 500; }
+    .hero-copy { max-width: 285px; border-left: 2px solid var(--red); padding-left: 16px; font-size: .95rem; }
+    .hero-copy p { margin: 0 0 16px; }
+    .stamp { position: absolute; right: 4%; top: 26%; border: 4px solid var(--red); color: var(--red); font: 700 clamp(1.1rem, 2.6vw, 2.1rem)/1 var(--mono); letter-spacing: .06em; padding: 13px 19px 9px; transform: rotate(-12deg); opacity: .87; }
+    .stamp::after { content: 'UNAUTHORIZED ACCESS IS STILL ACCESS'; display: block; font-size: 7px; text-align: center; margin-top: 6px; letter-spacing: .04em; }
+    .corner { position: absolute; font: 10px var(--mono); color: var(--muted); }
+    .corner.one { right: 0; top: 16px; }
+    .corner.two { left: 0; bottom: 16px; }
+
+    .index { padding: 28px 0 46px; display: grid; grid-template-columns: 1fr 2.7fr; gap: 40px; border-bottom: 1px solid var(--ink); }
+    .index-title { font: 500 12px var(--mono); text-transform: uppercase; }
+    .index-title::before { content: '↳ '; color: var(--red); }
+    .index-list { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); border-top: 1px solid var(--line); }
+    .index-list a { border-bottom: 1px solid var(--line); padding: 10px 8px; text-decoration: none; font: 11px var(--mono); text-transform: uppercase; transition: background .2s, color .2s; }
+    .index-list a:hover { color: var(--paper); background: var(--ink); }
+    .index-list a span { color: var(--red); margin-right: 12px; }
+
+    section { padding: 105px 0; border-bottom: 1px solid var(--ink); position: relative; }
+    .section-head { display: grid; grid-template-columns: 120px 1fr; gap: 30px; margin-bottom: 46px; }
+    .section-num { font: 500 12px var(--mono); color: var(--red); padding-top: 9px; }
+    h2 { font-size: clamp(2.6rem, 7vw, 7rem); line-height: .86; letter-spacing: -.07em; margin: 0; font-weight: 600; max-width: 900px; }
+    .section-note { font: 11px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 18px 0 0; max-width: 540px; }
+    .record { border: 1px solid var(--ink); background: var(--wash); }
+    .record-bar { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--ink); padding: 12px 15px; font: 10px var(--mono); text-transform: uppercase; }
+    .record-grid { display: grid; grid-template-columns: repeat(2,1fr); }
+    .field { padding: 22px 18px; border-bottom: 1px solid var(--line); }
+    .field:nth-child(odd) { border-right: 1px solid var(--line); }
+    .field:last-child, .field:nth-last-child(2) { border-bottom: 0; }
+    .field label { display: block; color: var(--muted); font: 10px var(--mono); text-transform: uppercase; margin-bottom: 9px; }
+    .field strong { font-size: 1.1rem; font-weight: 500; }
+
+    .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 8vw; }
+    .metric { display: grid; grid-template-columns: minmax(130px, 1fr) 1.6fr 48px; gap: 12px; align-items: center; font: 11px var(--mono); text-transform: uppercase; border-bottom: 1px solid var(--line); padding: 13px 0; }
+    .metric .bar { height: 13px; border: 1px solid var(--ink); padding: 2px; }
+    .metric .bar i { display: block; height: 100%; background: var(--ink); width: var(--value); }
+    .metric .score { color: var(--red); text-align: right; }
+    .assessment { margin-top: 47px; border-left: 4px solid var(--red); padding: 15px 20px; font: 500 1.1rem/1.3 var(--mono); max-width: 650px; text-transform: uppercase; }
+
+    .history { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; }
+    .case-label { font: 11px var(--mono); color: var(--red); }
+    h3 { margin: 8px 0 12px; font-size: clamp(1.45rem,3vw,2.5rem); line-height: .95; letter-spacing: -.05em; }
+    .history ul { margin: 25px 0 0; padding: 0; list-style: none; font: 12px var(--mono); text-transform: uppercase; }
+    .history li { border-top: 1px solid var(--line); padding: 12px 0; }
+    .history li::before { content: '— '; color: var(--red); }
+    .positions { border-left: 1px solid var(--ink); padding-left: 28px; }
+    .position { padding: 0 0 28px; margin-bottom: 28px; border-bottom: 1px solid var(--line); }
+
+    .bug-list { border-top: 1px solid var(--ink); }
+    .bug { display: grid; grid-template-columns: 100px 1fr auto; align-items: center; gap: 25px; padding: 24px 0; border-bottom: 1px solid var(--line); }
+    .bug-id { font: 11px var(--mono); color: var(--red); }
+    .bug p { margin: 0; font-size: clamp(1.2rem, 2vw, 1.8rem); letter-spacing: -.03em; }
+    .bug-status { font: 10px var(--mono); text-transform: uppercase; white-space: nowrap; }
+
+    .inventory { display: grid; grid-template-columns: repeat(5,1fr); border-left: 1px solid var(--ink); border-top: 1px solid var(--ink); }
+    .item { min-height: 190px; padding: 17px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); display: flex; flex-direction: column; justify-content: space-between; transition: transform .2s, background .2s; }
+    .item:hover { transform: translateY(-5px) rotate(.5deg); background: #f5f2e9; }
+    .item-name { font: 500 12px var(--mono); }
+    .item-icon { font-size: 3.7rem; font-weight: 700; letter-spacing: -.12em; }
+    .item-condition { border-top: 1px solid var(--line); padding-top: 12px; font: 10px var(--mono); text-transform: uppercase; color: var(--muted); }
+
+    .classified { background: var(--ink); color: var(--paper); margin: 0 calc((100vw - min(1440px, calc(100vw - 48px))) / -2); padding: 105px max(24px, calc((100vw - min(1440px, calc(100vw - 48px))) / 2)); }
+    .classified .section-num, .classified .section-note { color: #c86863; }
+    .classified .section-head { max-width: 1440px; margin-left: auto; margin-right: auto; }
+    .redactions { max-width: 920px; margin: 0 auto; }
+    .redaction-row { display: grid; grid-template-columns: 180px 1fr; gap: 28px; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(235,232,223,.24); font: 11px var(--mono); text-transform: uppercase; }
+    .redaction-row .label { color: #aaa99f; }
+    .redact { color: var(--ink); background: var(--paper); padding: 2px 8px; letter-spacing: .19em; cursor: help; transition: color .2s, background .2s; }
+    .redact:hover, .redact:focus { color: var(--paper); background: var(--red); }
+    .request { display: inline-block; margin-top: 32px; color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--red); padding-bottom: 6px; font: 11px var(--mono); text-transform: uppercase; }
+    .request:hover { color: #e8756d; }
+    .unnecessary { margin: 125px auto 0; border: 1px solid var(--red); padding: 24px; max-width: 540px; color: #e8756d; font: 12px var(--mono); text-transform: uppercase; }
+
+    .case-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+    details { border: 1px solid var(--ink); background: var(--wash); }
+    summary { cursor: pointer; list-style: none; padding: 23px 20px; display: flex; justify-content: space-between; gap: 20px; font-size: 1.15rem; font-weight: 500; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; font: 20px var(--mono); color: var(--red); }
+    details[open] summary::after { content: '−'; }
+    details p { border-top: 1px solid var(--line); padding: 18px 20px 24px; margin: 0; color: var(--muted); font: 12px/1.6 var(--mono); }
+    .case-no { display: block; color: var(--red); font: 10px var(--mono); margin-bottom: 9px; }
+
+    .review { display: grid; grid-template-columns: 1.4fr .8fr; gap: 10vw; align-items: start; }
+    .review .metrics { display: block; }
+    .review .metric { grid-template-columns: 1fr 1.2fr 48px; }
+    .manager { border: 1px solid var(--ink); padding: 22px; position: relative; margin-top: 40px; transform: rotate(1deg); }
+    .manager::before { content: 'MANAGER\2019S COMMENTS'; position: absolute; top: -9px; left: 14px; padding: 0 7px; background: var(--paper); font: 10px var(--mono); color: var(--red); }
+    .manager p { font: 500 clamp(1.5rem,3vw,2.8rem)/1 var(--mono); text-transform: uppercase; margin: 14px 0 4px; }
+
+    .memos { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    .memo { min-height: 180px; padding: 18px; border: 1px solid var(--ink); display: flex; flex-direction: column; justify-content: space-between; background: var(--wash); }
+    .memo:nth-child(2) { transform: rotate(-1deg); }
+    .memo:nth-child(3) { transform: rotate(1.2deg); background: #e3e0d6; }
+    .memo:nth-child(4) { transform: rotate(-.5deg); }
+    .memo p { font: 500 1.2rem/1.05 var(--mono); text-transform: uppercase; margin: 30px 0; }
+    .memo small { font: 9px var(--mono); color: var(--red); }
+
+    .timeline { max-width: 800px; margin: auto; border-left: 1px solid var(--ink); padding-left: 42px; }
+    .time-point { position: relative; padding: 0 0 48px; }
+    .time-point::before { content: ''; position: absolute; width: 9px; height: 9px; border: 2px solid var(--red); background: var(--paper); left: -48px; top: 4px; }
+    .time-year { color: var(--red); font: 12px var(--mono); }
+    .time-point h3 { margin: 6px 0 0; font: 500 clamp(1.2rem,2vw,1.8rem)/1 var(--mono); text-transform: uppercase; }
+    .arrow { color: var(--red); font: 25px var(--mono); margin-top: 12px; }
+
+    footer { padding: 80px 0 40px; }
+    .footer-main { display: flex; justify-content: space-between; align-items: end; gap: 40px; border-bottom: 1px solid var(--ink); padding-bottom: 35px; }
+    .end-file { font-size: clamp(3rem, 10vw, 10rem); line-height: .8; letter-spacing: -.09em; font-weight: 700; }
+    .footer-status { font: 11px var(--mono); text-transform: uppercase; text-align: right; }
+    .footer-status div { margin-top: 9px; }
+    .unless { display: inline-block; margin-top: 32px; color: var(--red); font: 11px var(--mono); text-transform: uppercase; text-decoration: none; border-bottom: 1px dotted var(--red); }
+    .unless:hover { letter-spacing: .15em; }
+    .secret { padding: 160px 0 130px; text-align: center; border-bottom: 1px solid var(--ink); }
+    .secret h2 { margin: auto; }
+    .secret p { font: 12px var(--mono); text-transform: uppercase; color: var(--red); }
+    .colophon { display: flex; justify-content: space-between; gap: 20px; padding-top: 18px; }
+
+    @media (max-width: 800px) {
+      .shell { width: min(100% - 30px, 680px); }
+      header { min-height: 620px; padding-top: 52px; }
+      .hero-grid, .history, .review { grid-template-columns: 1fr; gap: 35px; }
+      .hero-grid { min-height: 500px; }
+      .stamp { top: 31%; right: 1%; }
+      .index { grid-template-columns: 1fr; gap: 18px; }
+      .index-list { grid-template-columns: 1fr 1fr; }
+      section { padding: 72px 0; }
+      .section-head { grid-template-columns: 1fr; gap: 12px; margin-bottom: 30px; }
+      .section-num { padding-top: 0; }
+      .metrics { grid-template-columns: 1fr; }
+      .inventory { grid-template-columns: repeat(2,1fr); }
+      .item:last-child { grid-column: span 2; }
+      .classified { margin: 0 -15px; padding: 72px 15px; }
+      .redaction-row { grid-template-columns: 1fr; gap: 9px; }
+      .case-grid, .memos { grid-template-columns: 1fr; }
+      .memo { min-height: 140px; transform: none !important; }
+      .bug { grid-template-columns: 75px 1fr; gap: 12px; }
+      .bug-status { grid-column: 2; }
+      .footer-main { align-items: start; flex-direction: column; }
+      .footer-status { text-align: left; }
+      .colophon { flex-direction: column; }
+    }
+
+    @media (max-width: 430px) {
+      h1 { font-size: 4.3rem; }
+      .topline { font-size: 8px; }
+      .index-list a { font-size: 9px; padding: 9px 3px; }
+      .record-grid { grid-template-columns: 1fr; }
+      .field:nth-child(odd) { border-right: 0; }
+      .field:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+      .metric { grid-template-columns: 1fr 44px; gap: 6px; }
+      .metric .bar { grid-column: 1 / -1; grid-row: 2; }
+      .metric .score { grid-column: 2; grid-row: 1; }
+      .inventory { grid-template-columns: 1fr 1fr; }
+      .item { min-height: 155px; padding: 13px; }
+      .item-icon { font-size: 2.6rem; }
+      .bug p { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- EDITABLE PERSONAL CONTENT STARTS HERE -->
+  <!-- Replace the personal copy below, while keeping the fictional / privacy-safe tone. -->
+  <div class="shell">
+    <div class="topline mono"><span>MUFFADDAL // PERSONNEL DATABASE</span><span>FILE NO. SW-001 &nbsp;|&nbsp; REV. 2026.08</span></div>
+
+    <header id="top">
+      <span class="corner one">INTERNAL USE ONLY // PUBLIC ACCESS GRANTED BY MISTAKE.. ops</span>
+      <span class="corner two">DOCUMENT 00/10 &nbsp;|&nbsp; STATUS: ACTIVE</span>
+      <div class="hero-grid">
+        <div>
+          <p class="hero-kicker"><strong>Access level: public</strong><br>Warning: you have accessed a personnel file without a particularly good reason.</p>
+          <h1>EMPLOYEE<br>FILE</h1>
+          <p class="micro">Subject is not currently available for comment. Subject is probably making something.</p>
+        </div>
+        <div class="hero-copy">
+          <p><strong>EMPLOYEE:</strong> MUFFADDAL</p>
+          <p><strong>DEPARTMENT:</strong> NOT SURE WHAT HE DOES, SOMETHING WITH S.. MAYBE</p>
+          <p><strong>POSITION:</strong> PROFESSIONAL SOMETHING</p>
+          <p><strong>STATUS:</strong> SOMEHOW ALIVE</p>
+          <p><strong>CLEARANCE:</strong> STRANGELY APPROVED</p>
+        </div>
+      </div>
+      <div class="stamp">CLASSIFIED</div>
+    </header>
+
+    <nav class="index" aria-label="Document navigation">
+      <div class="index-title">File index</div>
+      <div class="index-list">
+        <a href="#identification"><span>01</span> Identification</a><a href="#psychology"><span>02</span> Psychological profile</a>
+        <a href="#history"><span>03</span> Professional history</a><a href="#bugs"><span>04</span> Known bugs</a>
+        <a href="#inventory"><span>05</span> Inventory</a><a href="#classified"><span>06</span> Classified</a>
+        <a href="#cases"><span>07</span> Case files</a><a href="#review"><span>08</span> Performance review</a>
+        <a href="#memos"><span>09</span> Memos</a><a href="#timeline"><span>10</span> Character development</a>
+      </div>
+    </nav>
+
+    <main>
+      <section id="identification">
+        <div class="section-head"><div class="section-num">01 — ID</div><div><h2>IDENTIFICATION</h2><p class="section-note">Official personnel record. Accuracy is not guaranteed, but the formatting is.</p></div></div>
+        <div class="record">
+          <div class="record-bar"><span>PERSONNEL</span><span>SW-001 / PAGE 01</span></div>
+          <div class="record-grid">
+            <div class="field"><label>Name</label><strong>Muffaddal</strong></div><div class="field"><label>Known as</label><strong>Faddzi / THAT GUY</strong></div>
+            <div class="field"><label>Occupation</label><strong>???</strong></div><div class="field"><label>Location</label><strong>Classified</strong></div>
+            <div class="field"><label>Current status</label><strong class="red">Online</strong></div><div class="field"><label>Threat level</label><strong>Mostly Harmless</strong></div>
+            <div class="field"><label>Primary function</label><strong>Builds things</strong></div><div class="field"><label>Secondary function</label><strong>Forgetfulness (unless scheduled a reminder)</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="psychology">
+        <div class="section-head"><div class="section-num">02 — PSY</div><div><h2>PSYCHOLOGICAL PROFILE</h2><p class="section-note">Assessment conducted by a department that does not exist. Results remain compelling.</p></div></div>
+        <div class="metrics">
+          <div class="metric"><span>Creativity</span><span class="bar" style="--value:90%"><i></i></span><span class="score">90%</span></div>
+          <div class="metric"><span>Curiosity</span><span class="bar" style="--value:90%"><i></i></span><span class="score">90%</span></div>
+          <div class="metric"><span>Patience</span><span class="bar" style="--value:99%"><i></i></span><span class="score">99%</span></div>
+          <div class="metric"><span>Overthinking</span><span class="bar" style="--value:10%"><i></i></span><span class="score">10%</span></div>
+          <div class="metric"><span>Productivity</span><span class="bar" style="--value:80%"><i></i></span><span class="score">80%</span></div>
+          <div class="metric"><span>Random projects</span><span class="bar" style="--value:100%"><i></i></span><span class="score">100%</span></div>
+        </div>
+        <div class="assessment">Subject appears normal during initial observation. Prolonged exposure is not recommended.</div>
+      </section>
+
+      <section id="history">
+        <div class="section-head"><div class="section-num">03 — HIST</div><div><h2>PROFESSIONAL HISTORY</h2><p class="section-note">This is not a CV. It is a record of events that were interpreted as employment.</p></div></div>
+        <div class="history">
+          <div><span class="case-label">2002 — PRESENT</span><h3>CEO AT WTF IS GOING ON</h3><p>Responsibilities include maintaining the illusion of a plan and replying “interesting” to new ideas.</p><ul><li>Opening unnecessary tabs</li><li>Having ideas at inconvenient times</li><li>Making things that did not need to exist</li><li>Convincing himself this is productive</li></ul></div>
+          <div class="positions"><span class="case-label">PREVIOUS POSITIONS</span><div class="position"><h3>Intern at Doing Things</h3><p class="micro">Tenure: longer than expected. Exit interview: pending.</p></div><div class="position"><h3>Manager at "I'll handle it"</h3><p class="micro">Promoted after demonstrating unusual consistency.</p></div><div class="position"><h3>Head of “I’ll Do It Tomorrow”</h3><p class="micro">The department remains operational.</p></div></div>
+        </div>
+      </section>
+
+      <section id="bugs">
+        <div class="section-head"><div class="section-num">04 — BUGS</div><div><h2>KNOWN BUGS</h2><p class="section-note">Several issues have been documented. None have been fixed because they are now part of the workflow.</p></div></div>
+        <div class="bug-list">
+          <div class="bug"><span class="bug-id">BUG-001</span><p>Will say "I'll remember this" instead of writing it down.</p><span class="bug-status red">Status: Frequent</span></div>
+          <div class="bug"><span class="bug-id">BUG-002</span><p>Subject says “one last thing.”</p><span class="bug-status red">Status: False</span></div>
+          <div class="bug"><span class="bug-id">BUG-003</span><p>Subject opens Instagram for “2 minutes.”</p><span class="bug-status red">Status: Chronic</span></div>
+          <div class="bug"><span class="bug-id">BUG-004</span><p>Subject gets a new idea while working on another idea.</p><span class="bug-status red">Status: Feature, not bug</span></div>
+        </div>
+      </section>
+
+      <section id="inventory">
+        <div class="section-head"><div class="section-num">05 — INV</div><div><h2>INVENTORY</h2><p class="section-note">Items currently under the subject’s control. Condition reports are subjective but difficult to dispute.</p></div></div>
+        <div class="inventory"><div class="item"><span class="item-name">01 / HEADPHONES</span><span class="item-icon">◒</span><span class="item-condition">Condition: Overworked</span></div><div class="item"><span class="item-name">02 / LAPTOP</span><span class="item-icon">▣</span><span class="item-condition">Condition: Fighting for its life</span></div><div class="item"><span class="item-name">03 / PHONE</span><span class="item-icon">▯</span><span class="item-condition">Condition: 97% unnecessary usage</span></div><div class="item"><span class="item-name">04 / BRAIN</span><span class="item-icon">◎</span><span class="item-condition">Condition: 34 tabs open</span></div><div class="item"><span class="item-name">05 / COFFEE</span><span class="item-icon">∪</span><span class="item-condition">Condition: Critical infrastructure</span></div></div>
+      </section>
+
+      <section id="classified" class="classified">
+        <div class="section-head"><div class="section-num">06 — REDACT</div><div><h2>CLASSIFIED INFORMATION</h2><p class="section-note">Hover over a redaction. The information is not necessarily better once revealed.</p></div></div>
+        <div class="redactions">
+          <div class="redaction-row"><span class="label">Favourite song</span><span class="redact" tabindex="0" title="Probably something by J. Cole or Seedhe Maut">████████████████████</span></div>
+          <div class="redaction-row"><span class="label">Biggest fear</span><span class="redact" tabindex="0" title="A blank page with a deadline">████████████</span></div>
+          <div class="redaction-row"><span class="label">Screen time</span><span class="redact" tabindex="0" title="The number is being reviewed by legal">██████████████████</span></div>
+          <div class="redaction-row"><span class="label">Questionable purchase</span><span class="redact" tabindex="0" title="It made sense at the time">████████████████</span></div>
+          <a class="request" href="#unnecessary">↳ Request declassification</a>
+        </div>
+        <div id="unnecessary" class="unnecessary">Congratulations. You now know something you did not need to know.<br><br>It was probably a domain.</div>
+      </section>
+
+      <section id="cases">
+        <div class="section-head"><div class="section-num">07 — CASES</div><div><h2>CASE FILES</h2><p class="section-note">Open a file. Read a teaser. Regret your curiosity at a reasonable pace.</p></div></div>
+        <div class="case-grid">
+          <details><summary><span><span class="case-no">CASE #001</span>THE WORST DECISION</span></summary><p>Subject saw a perfectly adequate solution, then decided to rebuild it from scratch. The outcome was educational.</p></details>
+          <details><summary><span><span class="case-no">CASE #002</span>THE PURCHASE THAT MADE SENSE AT THE TIME</span></summary><p>A purchase was made. The justification was excellent. The object has not been located since.</p></details>
+          <details><summary><span><span class="case-no">CASE #003</span>THE 3-DAY OBSESSION</span></summary><p>For seventy-two hours, the subject knew everything about an oddly specific topic. Knowledge retention is under investigation.</p></details>
+          <details><summary><span><span class="case-no">CASE #004</span>THE INCIDENT</span></summary><p>There are no witnesses. There is no official record. There is, however, a folder named “final-final-2”.</p></details>
+        </div>
+      </section>
+
+      <section id="review">
+        <div class="section-head"><div class="section-num">08 — REVIEW</div><div><h2>PERFORMANCE REVIEW</h2><p class="section-note">Annual review period: whenever. Reviewer: visibly tired.</p></div></div>
+        <div class="review"><div class="metrics"><div class="metric"><span>Productivity</span><span class="bar" style="--value:80%"><i></i></span><span class="score">80%</span></div><div class="metric"><span>Sleep schedule</span><span class="bar" style="--value:20%"><i></i></span><span class="score">20%</span></div><div class="metric"><span>Complication ability</span><span class="bar" style="--value:100%"><i></i></span><span class="score">100%</span></div><div class="metric"><span>Finishing projects</span><span class="bar" style="--value:40%"><i></i></span><span class="score">40%</span></div><div class="metric"><span>“One last thing” accuracy</span><span class="bar" style="--value:100%"><i></i></span><span class="score">100%</span></div></div><div class="manager"><span class="micro">FORM 08-B / FINAL COMMENT</span><p>Could be worse.</p><span class="micro">Recommendation: continue, but perhaps with supervision.</span></div></div>
+      </section>
+
+      <section id="memos">
+        <div class="section-head"><div class="section-num">09 — MEMOS</div><div><h2>CONFIDENTIAL MEMOS</h2><p class="section-note">Internal communications recovered from an unsecured drawer.</p></div></div>
+        <div class="memos"><div class="memo"><small>MEMO 27-A / INTERNAL</small><p>Stop buying domains.</p><small>— ADMINISTRATION</small></div><div class="memo"><small>MEMO 31-C / URGENT</small><p>This was supposed to be a simple website.</p><small>— PROJECT CONTROL</small></div><div class="memo"><small>MEMO 42-F / DO NOT FORWARD</small><p>We have gone too far.</p><small>— UNKNOWN</small></div><div class="memo"><small>MEMO 51-B / CIRCULATION</small><p>Nobody asked for this.</p><small>— EVERYONE</small></div></div>
+      </section>
+
+      <section id="timeline">
+        <div class="section-head"><div class="section-num">10 — TIMELINE</div><div><h2>CHARACTER DEVELOPMENT</h2><p class="section-note">A timeline of events. Some dates have been rounded for narrative convenience.</p></div></div>
+        <div class="timeline"><div class="time-point"><span class="time-year">2002</span><h3>Subject acquired human form</h3><div class="arrow">↓</div></div><div class="time-point"><span class="time-year">2012</span><h3>Discovered the internet</h3><div class="arrow">↓</div></div><div class="time-point"><span class="time-year">2016</span><h3>Questionable decisions begin</h3><div class="arrow">↓</div></div><div class="time-point"><span class="time-year">2020</span><h3>Started making things</h3><div class="arrow">↓</div></div><div class="time-point"><span class="time-year">2026</span><h3>Created this website</h3><div class="arrow">↓</div></div><div class="time-point"><span class="time-year">NOW</span><h3>No further information</h3></div></div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-main"><div class="end-file">END<br>OF FILE</div><div class="footer-status"><div>Document status: <span class="red">Incomplete</span></div><div>Last updated: 2026</div><div>File integrity: Surprisingly acceptable</div></div></div>
+      <a class="unless" href="#secret">...unless?</a>
+      <div id="secret" class="secret"><p>ACCESS RESTRICTED // PAGE 11</p><h2>YOU FOUND<br>THE SECRET PAGE.</h2><p>Unfortunately, there is no secret.</p></div>
+      <div class="colophon micro"><span>SW-001 // PERSONNEL DATABASE</span><span>There is probably nothing else to see.</span></div>
+    </footer>
+  </div>
+</body>
+</html>
