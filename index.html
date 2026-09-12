@@ -12,6 +12,20 @@
 
 </head>
 <body>
+
+  <script>
+    const cursor = document.getElementById("terminal-cursor");
+
+window.addEventListener("pointermove", (e) => {
+  cursor.style.transform =
+    `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+});
+  </script>
+
+  <div id="terminal-cursor">
+    <span id="cursor-text">&gt;_</span>
+</div>
+
   <div class="shell">
     <div class="topline mono"><span>Faddzi // PERSONNEL DATABASE</span><span>FILE NO. SW-001 &nbsp;|&nbsp; REV. 2026.08</span></div>
 
@@ -182,5 +196,6 @@
       <div class="colophon micro"><span>SW-001 // PERSONNEL DATABASE</span><span>There is probably nothing else to see.</span></div>
     </footer>
   </div>
+  <script src="script.js"></script>
 </body>
 </html>
