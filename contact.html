@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e8e4da">
+  <meta name="description" content="Open channel contact for Faddzi.">
+  <title>CONTACT // FADDZI / OPEN CHANNEL</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <script>
+    const cursor = document.getElementById("terminal-cursor");
+
+    window.addEventListener("pointermove", (e) => {
+      cursor.style.transform =
+        `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+    });
+  </script>
+
+  <div id="terminal-cursor">
+    <span id="cursor-text">&gt;_</span>
+  </div>
+
+  <div class="shell contact-shell">
+    <div class="topline mono"><span>Faddzi // PERSONNEL DATABASE</span><span>FILE NO. SW-011 &nbsp;|&nbsp; REV. 2026.08</span></div>
+
+    <header class="contact-header">
+      <span class="corner one">CORRESPONDENCE ROUTE // UNOFFICIAL</span>
+      <span class="corner two">DOCUMENT 11 / 11 &nbsp;|&nbsp; STATUS: OPEN</span>
+      <div class="contact-hero">
+        <div>
+          <p class="hero-kicker"><strong>Channel: public</strong><br>Use this only if you have a reason. A fair one is better than a dramatic one.</p>
+          <h1>CONTACT</h1>
+        </div>
+        <div class="hero-copy">
+          <p><strong>SUBJECT:</strong> MUFFADDAL</p>
+          <p><strong>METHOD:</strong> FORMAL INQUIRIES ONLY</p>
+          <p><strong>RESPONSE TIME:</strong> EVENTUALLY</p>
+          <p><strong>NOTES:</strong> NO PROMISES, NO GUARANTEES</p>
+        </div>
+      </div>
+      <div class="contact-sub">
+        <p>Send a message. It will be logged in the archive and delivered to the correct floor of vague responsibility.</p>
+        <a class="back-link" href="index.html">← Return to personnel file</a>
+      </div>
+    </header>
+
+    <main class="contact-main">
+      <section class="contact-card" aria-labelledby="contact-form-heading">
+        <div class="card-header mono" id="contact-form-heading">Open channel / intake</div>
+        <form class="contact-form" id="contact-form">
+          <div class="field-row">
+            <div class="form-field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required>
+            </div>
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="form-field">
+              <label for="topic">Reason</label>
+              <select id="topic" name="topic" required>
+                <option value="">Select a category</option>
+                <option>Project inquiry</option>
+                <option>Collaboration</option>
+                <option>General message</option>
+                <option>Something highly specific</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="urgency">Urgency</label>
+              <select id="urgency" name="urgency">
+                <option>Not urgent</option>
+                <option>Important enough to mention</option>
+                <option>Urgent by your standards</option>
+                <option>Life or death / not really</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell the subject what you need, what you found, or why absolutely nobody should have emailed this page." required></textarea>
+          </div>
+
+          <div class="captcha-box" aria-live="polite">
+            <div class="captcha-header mono">Verification</div>
+            <div class="captcha-row">
+              <span class="captcha-value" id="captcha-question">Loading challenge…</span>
+              <button type="button" class="captcha-refresh" id="captcha-refresh">Refresh</button>
+            </div>
+            <input id="captcha-answer" name="captchaAnswer" type="text" inputmode="numeric" placeholder="Type the answer" aria-label="Solve the captcha" required>
+            <input id="captcha-token" name="captchaToken" type="hidden">
+          </div>
+
+          <div class="form-actions">
+            <label class="checkbox">
+              <input type="checkbox" name="consent" required>
+              I confirm this is a real message and not a test of the universe.
+            </label>
+            <button class="submit-btn" type="submit">Transmit to archive</button>
+          </div>
+        </form>
+        <p class="form-status" id="form-status" aria-live="polite">No transmission logged yet.</p>
+      </section>
+
+      <aside class="contact-card contact-side" aria-labelledby="routes-heading">
+        <div class="card-header mono" id="routes-heading">Alternative routes</div>
+        <ul class="contact-methods">
+          <li>
+            <strong>Instagram</strong>
+            <a href="https://instagram.com/faddzi/" target="_blank" rel="noopener noreferrer">@faddzi</a>
+          </li>
+          <li>
+            <strong>X / Twitter</strong>
+            <a href="https://x.com/faddzitweet" target="_blank" rel="noopener noreferrer">@faddzitweet</a>
+          </li>
+          <li>
+            <strong>LinkedIn</strong>
+            <a href="https://linkedin.com/in/muffaddals/" target="_blank" rel="noopener noreferrer">Muffaddal</a>
+          </li>
+          <li>
+            <strong>Email</strong>
+            <a href="mailto:me@faddzi.com">me@faddzi.com</a>
+          </li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="contact-footer">
+      <span>Archive status: <strong>Awaiting input</strong></span>
+      <span>Open channel // response is not guaranteed</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const contactForm = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+    const captchaQuestion = document.getElementById('captcha-question');
+    const captchaToken = document.getElementById('captcha-token');
+    const captchaAnswer = document.getElementById('captcha-answer');
+    const captchaRefresh = document.getElementById('captcha-refresh');
+
+    async function loadCaptcha() {
+      try {
+        const response = await fetch('/api/captcha');
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error('Unable to load verification challenge.');
+        }
+
+        captchaQuestion.textContent = result.question;
+        captchaToken.value = result.token;
+        captchaAnswer.value = '';
+      } catch (error) {
+        captchaQuestion.textContent = 'Challenge unavailable';
+        formStatus.textContent = `Verification error: ${error.message}`;
+      }
+    }
+
+    captchaRefresh.addEventListener('click', loadCaptcha);
+
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        topic: document.getElementById('topic').value,
+        urgency: document.getElementById('urgency').value,
+        message: document.getElementById('message').value.trim(),
+        captchaToken: captchaToken.value,
+        captchaAnswer: captchaAnswer.value.trim(),
+      };
+
+      formStatus.textContent = 'Sending message...';
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Submission failed.');
+        }
+
+        formStatus.textContent = result.message || 'Transmission logged.';
+        contactForm.reset();
+        await loadCaptcha();
+      } catch (error) {
+        formStatus.textContent = `Transmission failed: ${error.message}`;
+        await loadCaptcha();
+      }
+    });
+
+    loadCaptcha();
+  </script>
+</body>
+</html>
