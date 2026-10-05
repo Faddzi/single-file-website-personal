@@ -294,6 +294,20 @@
       padding-bottom: 24px;
     }
 
+    .contact-block {
+      padding-top: 22px;
+    }
+
+    .contact-copy .micro {
+      display: block;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .contact-copy p {
+      margin: 0;
+    }
+
     .contact-header {
       position: relative;
       min-height: 0;
@@ -403,8 +417,7 @@
 
     .form-field input,
     .form-field textarea,
-    .form-field select,
-    .captcha-box input {
+    .form-field select {
       width: 100%;
       border: 1px solid var(--ink);
       background: rgba(255,255,255,0.3);
@@ -421,67 +434,24 @@
 
     .form-field input:focus,
     .form-field textarea:focus,
-    .form-field select:focus,
-    .captcha-box input:focus {
+    .form-field select:focus {
       outline: 2px solid rgba(180, 46, 40, 0.5);
       outline-offset: 1px;
     }
 
-    .captcha-box {
+    .email-notice {
       display: grid;
-      gap: 10px;
+      gap: 8px;
       padding: 16px 20px 18px;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       background: rgba(255,255,255,0.07);
     }
 
-    .captcha-header {
-      color: var(--red);
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .captcha-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .captcha-value {
-      font: 600 1.2rem/1.2 var(--mono);
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-
-    .captcha-error {
+    .email-notice p {
       margin: 0;
       color: var(--muted);
       font: 11px/1.5 var(--mono);
-    }
-
-    .captcha-error a {
-      color: var(--red);
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
-    }
-
-    .captcha-refresh {
-      border: 1px solid var(--ink);
-      background: transparent;
-      color: var(--ink);
-      font: 10px var(--mono);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      padding: 10px 12px;
-      cursor: pointer;
-    }
-
-    .captcha-refresh:hover {
-      background: var(--ink);
-      color: var(--paper);
     }
 
     .form-actions {
@@ -522,12 +492,6 @@
       background: var(--red);
       border-color: var(--red);
       transform: translateY(-1px);
-    }
-
-    .submit-btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-      transform: none;
     }
 
     .form-status {

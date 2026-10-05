@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://faddzi.com/</loc>
+    <loc>https://faddzi.github.io/single-file-website-personal/</loc>
+  </url>
+  <url>
+    <loc>https://faddzi.github.io/single-file-website-personal/contact.html</loc>
   </url>
 </urlset>

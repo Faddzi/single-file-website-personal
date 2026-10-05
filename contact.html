@@ -11,15 +11,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <script>
-    const cursor = document.getElementById("terminal-cursor");
-
-    window.addEventListener("pointermove", (e) => {
-      cursor.style.transform =
-        `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-    });
-  </script>
-
   <div id="terminal-cursor">
     <span id="cursor-text">&gt;_</span>
   </div>
@@ -90,15 +81,9 @@
             <textarea id="message" name="message" placeholder="Tell the subject what you need, what you found, or why absolutely nobody should have emailed this page." required></textarea>
           </div>
 
-          <div class="captcha-box" aria-live="polite">
-            <div class="captcha-header mono">Verification</div>
-            <div class="captcha-row">
-              <span class="captcha-value" id="captcha-question">Loading challenge…</span>
-              <button type="button" class="captcha-refresh" id="captcha-refresh">Refresh</button>
-            </div>
-            <input id="captcha-answer" name="captchaAnswer" type="text" inputmode="numeric" placeholder="Type the answer" aria-label="Solve the captcha" required>
-            <input id="captcha-token" name="captchaToken" type="hidden">
-            <p class="captcha-error" id="captcha-error" hidden>Verification is temporarily offline. Please <a href="mailto:me@faddzi.com">email the subject</a> directly.</p>
+          <div class="email-notice">
+            <span class="micro">DELIVERY METHOD / EMAIL</span>
+            <p>Transmit the message using your email app. Nothing is stored on this site.</p>
           </div>
 
           <div class="form-actions">
@@ -106,10 +91,10 @@
               <input type="checkbox" name="consent" required>
               I confirm this is a real message and not a test of the universe.
             </label>
-            <button class="submit-btn" type="submit" disabled>Transmit to archive</button>
+            <button class="submit-btn" type="submit">Open email draft</button>
           </div>
         </form>
-        <p class="form-status" id="form-status" aria-live="polite">No transmission logged yet.</p>
+        <p class="form-status" id="form-status" aria-live="polite">Your message stays in your email app until you send it.</p>
       </section>
 
       <aside class="contact-card contact-side" aria-labelledby="routes-heading">
@@ -136,8 +121,8 @@
     </main>
 
     <footer class="contact-footer">
-      <span>Archive status: <strong>Awaiting input</strong></span>
-      <span>Open channel // response is not guaranteed</span>
+      <span>Delivery status: <strong>Email handoff</strong></span>
+      <span>No message data is stored on this site</span>
     </footer>
   </div>
 
@@ -145,80 +130,25 @@
   <script>
     const contactForm = document.getElementById('contact-form');
     const formStatus = document.getElementById('form-status');
-    const captchaQuestion = document.getElementById('captcha-question');
-    const captchaToken = document.getElementById('captcha-token');
-    const captchaAnswer = document.getElementById('captcha-answer');
-    const captchaRefresh = document.getElementById('captcha-refresh');
-    const captchaError = document.getElementById('captcha-error');
-    const submitButton = contactForm.querySelector('.submit-btn');
 
-    async function loadCaptcha() {
-      try {
-        const response = await fetch('/api/captcha');
-        const result = await response.json();
-
-        if (!response.ok || !result.ok) {
-          throw new Error('Unable to load verification challenge.');
-        }
-
-        captchaQuestion.textContent = result.question;
-        captchaToken.value = result.token;
-        captchaAnswer.value = '';
-        captchaAnswer.disabled = false;
-        captchaError.hidden = true;
-        submitButton.disabled = false;
-      } catch (error) {
-        captchaQuestion.textContent = 'Verification unavailable';
-        captchaToken.value = '';
-        captchaAnswer.disabled = true;
-        captchaError.hidden = false;
-        submitButton.disabled = true;
-        formStatus.textContent = 'The contact form is temporarily offline.';
-      }
-    }
-
-    captchaRefresh.addEventListener('click', loadCaptcha);
-
-    contactForm.addEventListener('submit', async (event) => {
+    contactForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      const payload = {
-        name: document.getElementById('name').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        topic: document.getElementById('topic').value,
-        urgency: document.getElementById('urgency').value,
-        message: document.getElementById('message').value.trim(),
-        captchaToken: captchaToken.value,
-        captchaAnswer: captchaAnswer.value.trim(),
-      };
+      const values = new FormData(contactForm);
+      const subject = `Website contact: ${values.get('topic')}`;
+      const body = [
+        `Name: ${values.get('name')}`,
+        `Email: ${values.get('email')}`,
+        `Reason: ${values.get('topic')}`,
+        `Urgency: ${values.get('urgency')}`,
+        '',
+        'Message:',
+        values.get('message'),
+      ].join('\n');
 
-      formStatus.textContent = 'Sending message...';
-
-      try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.error || 'Submission failed.');
-        }
-
-        formStatus.textContent = result.message || 'Transmission logged.';
-        contactForm.reset();
-        await loadCaptcha();
-      } catch (error) {
-        formStatus.textContent = `Transmission failed: ${error.message}`;
-        await loadCaptcha();
-      }
+      formStatus.textContent = 'Opening your email app with the message draft…';
+      window.location.href = `mailto:me@faddzi.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
-
-    loadCaptcha();
   </script>
 </body>
 </html>

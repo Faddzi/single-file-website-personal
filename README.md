@@ -1,14 +1,19 @@
 # single-file-website-personal
 
-## Contact form deployment
+## Hosting and contact
 
-The production contact form uses Vercel serverless endpoints and stores messages in Supabase.
+The site is static and deploys to GitHub Pages from `main` using `.github/workflows/pages.yml`. It requires no server, API keys, or third-party form service.
 
-1. Run `supabase/schema.sql` in the Supabase SQL Editor to create the `contact_submissions` table and its row-level security policies.
-2. Add these environment variables to the Vercel project for Production (and Preview if needed):
-   - `SUPABASE_URL`: the project URL from Supabase Project Settings → API.
-   - `SUPABASE_ANON_KEY`: the project's publishable/anon key. Never use the service-role key.
-   - `CAPTCHA_SECRET`: a private random secret used to sign captcha challenges. Generate one with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`.
-3. Redeploy the Vercel project after saving the environment variables.
+The contact form prepares an email draft addressed to `me@faddzi.com` in the visitor's default email app. The visitor must send the draft; GitHub Pages does not receive or store form submissions.
 
-For local development, copy `.env.example` to `.env`, fill in the same values, and run `npm start`. Without Supabase configured, the local Express server stores entries in `data/contact-submissions.json`; that file is ignored by Git.
+### GitHub Pages setup
+
+Enable Pages for this repository with **Build and deployment → GitHub Actions**. The published project site is `https://faddzi.github.io/single-file-website-personal/`.
+
+To serve the site at `faddzi.com`, add `faddzi.com` as the custom domain in **Settings → Pages**, then point the domain's DNS to GitHub Pages:
+
+- Apex `A` records: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, and `185.199.111.153`.
+- Optional `AAAA` records: `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, and `2606:50c0:8003::153`.
+- Optional `www` `CNAME`: `faddzi.github.io`.
+
+Remove any old records pointing the domain at the previous hosting provider. DNS changes are made at the domain's DNS provider, not in the GitHub repository.

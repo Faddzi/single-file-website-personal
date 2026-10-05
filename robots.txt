@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://faddzi.com/sitemap.xml
+Sitemap: https://faddzi.github.io/single-file-website-personal/sitemap.xml
