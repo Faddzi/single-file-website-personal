@@ -98,6 +98,7 @@
             </div>
             <input id="captcha-answer" name="captchaAnswer" type="text" inputmode="numeric" placeholder="Type the answer" aria-label="Solve the captcha" required>
             <input id="captcha-token" name="captchaToken" type="hidden">
+            <p class="captcha-error" id="captcha-error" hidden>Verification is temporarily offline. Please <a href="mailto:me@faddzi.com">email the subject</a> directly.</p>
           </div>
 
           <div class="form-actions">
@@ -105,7 +106,7 @@
               <input type="checkbox" name="consent" required>
               I confirm this is a real message and not a test of the universe.
             </label>
-            <button class="submit-btn" type="submit">Transmit to archive</button>
+            <button class="submit-btn" type="submit" disabled>Transmit to archive</button>
           </div>
         </form>
         <p class="form-status" id="form-status" aria-live="polite">No transmission logged yet.</p>
@@ -148,6 +149,8 @@
     const captchaToken = document.getElementById('captcha-token');
     const captchaAnswer = document.getElementById('captcha-answer');
     const captchaRefresh = document.getElementById('captcha-refresh');
+    const captchaError = document.getElementById('captcha-error');
+    const submitButton = contactForm.querySelector('.submit-btn');
 
     async function loadCaptcha() {
       try {
@@ -161,9 +164,16 @@
         captchaQuestion.textContent = result.question;
         captchaToken.value = result.token;
         captchaAnswer.value = '';
+        captchaAnswer.disabled = false;
+        captchaError.hidden = true;
+        submitButton.disabled = false;
       } catch (error) {
-        captchaQuestion.textContent = 'Challenge unavailable';
-        formStatus.textContent = `Verification error: ${error.message}`;
+        captchaQuestion.textContent = 'Verification unavailable';
+        captchaToken.value = '';
+        captchaAnswer.disabled = true;
+        captchaError.hidden = false;
+        submitButton.disabled = true;
+        formStatus.textContent = 'The contact form is temporarily offline.';
       }
     }
 
