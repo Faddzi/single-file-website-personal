@@ -371,6 +371,10 @@
       border: 0;
     }
 
+    .contact-main > section.contact-card {
+      border: 1px solid var(--ink);
+    }
+
     .contact-card {
       border: 1px solid var(--ink);
       background: rgba(255,255,255,0.18);
