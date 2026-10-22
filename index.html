@@ -8,26 +8,17 @@
   <title>THE EMPLOYEE FILE // SW-001</title>
 
 <link rel="icon" type="image/png" href="favicon.png">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=cleanup-20261022">
 
 </head>
 <body>
 
-  <script>
-    const cursor = document.getElementById("terminal-cursor");
-
-window.addEventListener("pointermove", (e) => {
-  cursor.style.transform =
-    `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-});
-  </script>
-
-  <div id="terminal-cursor">
+  <div id="terminal-cursor" aria-hidden="true">
     <span id="cursor-text">&gt;_</span>
 </div>
 
   <div class="shell">
-    <div class="topline mono"><span>Faddzi // PERSONNEL DATABASE</span><span>FILE NO. SW-001 &nbsp;|&nbsp; REV. 2026.08</span></div>
+    <div class="topline mono"><span>Faddzi // PERSONNEL DATABASE</span><span>FILE NO. SW-001 &nbsp;|&nbsp; REV. 2026.10</span></div>
 
     <header id="top">
       <span class="corner one">INTERNAL USE ONLY // PUBLIC ACCESS GRANTED BY MISTAKE.. ops</span>
@@ -68,6 +59,7 @@ window.addEventListener("pointermove", (e) => {
         <a href="#cases">
           <span>07</span> Case files</a><a href="#review"><span>08</span> Performance review</a>
         <a href="#memos"><span>09</span> Memos</a><a href="#timeline"><span>10</span> Character development</a>
+        <a href="#contact"><span>11</span> Contact</a>
       </div>
     </nav>
 
@@ -171,24 +163,45 @@ window.addEventListener("pointermove", (e) => {
     <footer>
       <div class="footer-main"><div class="end-file">END<br>OF FILE</div><div class="footer-status"><div>Document status: <span class="red">Incomplete</span></div><div>Last updated: 2026</div><div>File integrity: Surprisingly acceptable</div></div></div>
       <!-- EDITABLE CONTACT LINKS START HERE -->
-      <div class="contact-block">
+      <div id="contact" class="contact-block">
         <div class="contact-copy"><span class="micro">OPEN CHANNEL / PERSONAL CORRESPONDENCE</span><p>Have something to say? Reach out. He may get back to you.</p></div>
 <div class="contact-links" aria-label="Social and email links">
-  <a href="https://instagram.com/faddzi/" target="_blank" rel="noopener noreferrer">
-    <span>01</span> Instagram ↗
+  <a class="contact-link" href="https://instagram.com/faddzi/" target="_blank" rel="noopener noreferrer">
+    <span class="contact-number">01</span>
+    <span class="contact-details">
+      <span class="contact-label">Instagram <span class="contact-arrow" aria-hidden="true">↗</span></span>
+      <span class="contact-status">STATUS: MOSTLY LURKING</span>
+    </span>
   </a>
 
-  <a href="https://x.com/faddzitweet" target="_blank" rel="noopener noreferrer">
-    <span>02</span> X / Twitter ↗
+  <a class="contact-link" href="https://x.com/faddzitweet" target="_blank" rel="noopener noreferrer">
+    <span class="contact-number">02</span>
+    <span class="contact-details">
+      <span class="contact-label">X / Twitter <span class="contact-arrow" aria-hidden="true">↗</span></span>
+      <span class="contact-status">STATUS: RESPONDS SOMETIMES</span>
+    </span>
   </a>
 
-  <a href="https://linkedin.com/in/muffaddals/" target="_blank" rel="noopener noreferrer">
-    <span>03</span> LinkedIn ↗
+  <a class="contact-link" href="https://linkedin.com/in/muffaddals/" target="_blank" rel="noopener noreferrer">
+    <span class="contact-number">03</span>
+    <span class="contact-details">
+      <span class="contact-label">LinkedIn <span class="contact-arrow" aria-hidden="true">↗</span></span>
+      <span class="contact-status">STATUS: PROFESSIONAL (ALLEGEDLY)</span>
+    </span>
   </a>
 
-  <a class="email" href="mailto:me@faddzi.com">
-    <span>04</span> Email the subject ↗
-  </a>
+  <div class="contact-link email-terminal">
+    <span class="contact-number">04</span>
+    <span class="contact-details">
+      <span class="contact-label">Email the subject</span>
+      <span class="email-address">me@faddzi.com</span>
+      <span class="email-actions" aria-label="Email options">
+        <button class="email-action copy-email" type="button" data-email="me@faddzi.com">Copy address</button>
+        <a class="email-action draft-email" href="mailto:me@faddzi.com?subject=hello%20Muffaddal!">Open mail draft <span class="contact-arrow" aria-hidden="true">↗</span></a>
+      </span>
+      <span class="copy-feedback" aria-live="polite"></span>
+    </span>
+  </div>
 </div>
         </div>
       <a class="unless" href="#secret">...unless?</a>
@@ -196,6 +209,7 @@ window.addEventListener("pointermove", (e) => {
       <div class="colophon micro"><span>SW-011 // PERSONNEL DATABASE</span><span>There is probably nothing else to see.</span></div>
     </footer>
   </div>
-  <script src="script.js"></script>
+  <script src="script.js?v=cursor-preview-20261022"></script>
 </body>
 </html>
+

@@ -1,0 +1,15 @@
+/* TEAM */
+
+Creator: Muffaddal Suratwala aka. faddzi
+Site: https://faddzi.com/
+Contact: me@faddzi.com
+
+/* SITE */
+
+Theme: The Employee File / personnel dossier
+Built with: HTML, CSS, and JavaScript
+Type: Personal portfolio
+
+/* THANKS */
+
+To everyone who opens the file :)

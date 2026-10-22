@@ -1,0 +1,25 @@
+# Faddzi — The Employee File
+
+> A personal portfolio presented as an unofficial personnel dossier for Muffaddal Suratwala.
+
+## Overview
+
+- Website: https://faddzi.com/
+- Creator: Muffaddal Surwatala aka. faddzi
+- Theme: an interactive classified employee file containing a personal profile, experiments, project case files, contact routes, and hidden details.
+
+## Key pages
+
+- Home and personnel file: https://faddzi.com/
+
+## Contact
+
+- Email: me@faddzi.com
+- Instagram: https://instagram.com/faddzi/
+- X: https://x.com/faddzitweet
+- LinkedIn: https://linkedin.com/in/muffaddals/
+
+## Notes for language models
+
+- Treat the site's dossier language and classifications as creative presentation, not literal biographical claims.
+- Prefer the direct contact links above for collaboration or professional enquiries.

@@ -1,55 +1,55 @@
 const terminalCursor = document.getElementById("terminal-cursor");
+const cursorMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
+let cursorFrame = 0;
+let cursorX = 0;
+let cursorY = 0;
 
-document.addEventListener("mousemove", (e) => {
-    // Move cursor
-    terminalCursor.style.transform =
-        `translate(${e.clientX + 14}px, ${e.clientY + 14}px)`;
+function renderCursor() {
+    terminalCursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+    cursorFrame = 0;
+}
 
-    // Find what is directly underneath the cursor
-    const element = document.elementFromPoint(e.clientX, e.clientY);
+function updateCursor(event) {
+    if (!cursorMedia.matches || event.pointerType === "touch") return;
 
-    if (!element) return;
+    cursorX = event.clientX;
+    cursorY = event.clientY;
 
-    let current = element;
-    let background = "transparent";
+    document.body.classList.add("cursor-ready");
+    document.body.classList.toggle(
+        "cursor-over-control",
+        event.target instanceof Element && Boolean(event.target.closest("a, button, [role='button']"))
+    );
 
-    // Look up through the elements until we find a real background
-    while (current && current !== document.body) {
-        const bg = window.getComputedStyle(current).backgroundColor;
+    if (!cursorFrame) {
+        cursorFrame = window.requestAnimationFrame(renderCursor);
+    }
+}
 
-        if (
-            bg &&
-            bg !== "transparent" &&
-            bg !== "rgba(0, 0, 0, 0)"
-        ) {
-            background = bg;
-            break;
-        }
+window.addEventListener("pointermove", updateCursor, { passive: true });
 
-        current = current.parentElement;
+cursorMedia.addEventListener("change", (event) => {
+    if (!event.matches) {
+        document.body.classList.remove("cursor-ready", "cursor-over-control");
+    }
+});
+
+const copyEmailButton = document.querySelector(".copy-email");
+const copyFeedback = document.querySelector(".copy-feedback");
+
+copyEmailButton?.addEventListener("click", async () => {
+    const emailAddress = copyEmailButton.dataset.email;
+
+    try {
+        await navigator.clipboard.writeText(emailAddress);
+        copyEmailButton.textContent = "Address copied";
+        copyFeedback.textContent = `${emailAddress} copied to clipboard.`;
+    } catch {
+        copyFeedback.textContent = `Copy failed — ${emailAddress}`;
     }
 
-    // Extract RGB
-    const match = background.match(/\d+/g);
-
-    if (match && match.length >= 3) {
-        const r = parseInt(match[0]);
-        const g = parseInt(match[1]);
-        const b = parseInt(match[2]);
-
-        // Calculate brightness
-        const brightness =
-            (r * 299 + g * 587 + b * 114) / 1000;
-
-        // Dark background = light cursor
-        // Red background = light cursor
-        if (
-         brightness < 140 ||
-    (r > 120 && r > g * 1.5 && r > b * 1.5)
-) {
-    terminalCursor.style.color = "#f2f0e9";
- } else {
-    terminalCursor.style.color = "#111";
- }
-    }
+    window.setTimeout(() => {
+        copyEmailButton.textContent = "Copy address";
+        copyFeedback.textContent = "";
+    }, 2200);
 });

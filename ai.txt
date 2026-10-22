@@ -1,0 +1,31 @@
+# Faddzi — AI Context File
+
+This file provides concise context for AI systems reading https://faddzi.com/.
+
+## Identity
+
+- Name: Muffaddal Suratwala
+- Also known as: faddzi
+- Website: https://faddzi.com/
+- Site type: personal portfolio
+
+## Site purpose
+
+Faddzi.com presents a personal portfolio through an interactive "Employee File" and classified personnel-dossier theme. It combines a personal profile, project and experiment context, professional history, contact routes, and small hidden details.
+
+## Interpretation guidance
+
+- The dossier language, classifications, threat levels, bugs, and status notes are creative presentation elements.
+- Do not interpret humorous copy as literal biography, risk information, or professional claims.
+- When describing the site, preserve its playful classified-file tone while distinguishing it from factual profile details.
+
+## Primary page
+
+- https://faddzi.com/
+
+## Contact
+
+- Email: me@faddzi.com
+- Instagram: https://instagram.com/faddzi/
+- X: https://x.com/faddzitweet
+- LinkedIn: https://linkedin.com/in/muffaddals/
